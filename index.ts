@@ -7,7 +7,7 @@ const config = new pulumi.Config()
 const prefix = pulumi.getStack().substring(0, 9);
 
 const resourceGroup = new azure.core.ResourceGroup(`${prefix}-rg`, {
-        location: azure.Locations.WestUS2,
+        location: azure.Locations.EastUS
     });
 
 const resourceGroupArgs = {
@@ -24,7 +24,6 @@ const storageAccount = new azure.storage.Account(storageAccountName, {
     accountTier: "Standard",
     accountReplicationType: "LRS",
 });
-
 
 const appServicePlan = new azure.appservice.Plan(`${prefix}-asp`, {
     ...resourceGroupArgs,
@@ -55,12 +54,6 @@ const blob = new azure.storage.ZipBlob(`${prefix}-b`, {
 
 const codeBlobUrl = azure.storage.signedBlobReadUrl(blob, storageAccount);
 
-const appInsights = new azure.appinsights.Insights(`${prefix}-ai`, {
-    ...resourceGroupArgs,
-
-    applicationType: "Web"
-});
-
 const username = "pulumi";;
 const pwd = config.require("sqlPassword");
 
@@ -85,9 +78,7 @@ const app = new azure.appservice.AppService(`${prefix}-as`, {
 
 
     appSettings: {
-        "WEBSITE_RUN_FROM_ZIP": codeBlobUrl,
-        "ApplicationInsights:InstrumentationKey": appInsights.instrumentationKey,
-        "APPINSIGHTS_INSTRUMENTATIONKEY": appInsights.instrumentationKey
+        "WEBSITE_RUN_FROM_ZIP": codeBlobUrl
     },
 
     connectionStrings: [{
