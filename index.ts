@@ -7,7 +7,7 @@ const config = new pulumi.Config()
 const prefix = pulumi.getStack().substring(0, 9);
 
 const resourceGroup = new azure.core.ResourceGroup(`${prefix}-rg`, {
-        location: azure.Locations.EastUS
+        location: azure.Locations.CentralUS
     });
 
 const resourceGroupArgs = {

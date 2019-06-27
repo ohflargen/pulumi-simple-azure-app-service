@@ -1,0 +1,4 @@
+config:
+  azure-appservice:codeLocation: ./html/
+  azure-appservice:sqlPassword:
+    secure: AAABAIoZnxgPZrhO8+iAHgIaREOqI7AgBkNkO/eOKJMDnzXFIX/uUPxuhCKfRA==
